@@ -162,31 +162,31 @@
                 "prezzo":3
             },
             {
-                "id":"CD001",
+                "id":"CD002",
                 "nome":"Cannolo al pistacchio",
                 "ingredienti":"-",
                 "prezzo":4
             },
             {
-                "id":"CD002",
+                "id":"CD003",
                 "nome":"Krapfen al pistacchio",
                 "ingredienti":"-",
                 "prezzo":2
             },
             {
-                "id":"CD002",
+                "id":"CD004",
                 "nome":"Krapfen alla nutella",
                 "ingredienti":"-",
                 "prezzo":2
             },
             {
-                "id":"CD002",
+                "id":"CD005",
                 "nome":"Krapfen alla nutella bianca",
                 "ingredienti":"-",
                 "prezzo":2
             },
             {
-                "id":"CD002",
+                "id":"CD006",
                 "nome":"Krapfen alla ricotta",
                 "ingredienti":"-",
                 "prezzo":2
