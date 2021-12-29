@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aggiorna Offerte Notizie</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- fine Bootstrap -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <!-- fine jQuery -->
+    <style>
+        #navbar{
+            width: 100%;
+            background-color: rgb(0, 0, 0);
+            padding:20px;
+            color:white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        #form{
+            width: 90%;
+            margin: auto;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            display:flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #form label{
+            width: 100%;
+            font-weight: bold;
+            margin:10px;
+            font-size: 1.5rem;
+        }
+        #form input[type="text"]{
+            width: 100%;
+            padding:10px;
+            margin:10px;
+            font-size: 1.5rem;
+        }
+        #form input[type="button"]{
+            width: 100%;
+            padding:10px;
+            margin:10px;
+            font-size: 1.5rem;
+            color: rgb(0, 0, 0);
+            background-color: rgb(255, 196, 0);
+            outline:none;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+        #result{
+            width: 100%;
+            margin: auto;
+        }
+        .radio{
+            flex-direction: row;
+        }
+        #risDiv{
+            position: relative;
+            width: 90%;
+            margin: auto;
+        }
+        #risDiv button{
+            background-color: cyan;
+            outline: none;
+            border: none;
+            padding: 9px;
+            font-weight: bold;
+            border-radius: 0px 0px 10px 0px;
+        }
+        #risDiv button:disabled{
+            background-color: grey;
+            color: rgb(59, 59, 59);
+            cursor: not-allowed;
+        }
+        pre{
+            background-color: black;
+            color: white;
+            padding:30px;
+        }
+        #copia{
+            position: absolute;
+            top:0;
+            left:0;
+        }
+        .flex{
+            width: 100%;
+            display: flex;
+            justify-content: space-evenly;
+        }
+        #linkFinale{
+            display: block;
+            margin: auto;
+            width: fit-content;
+            padding: 40px;
+            color:rgb(78, 78, 78);
+            font-size: 2rem;
+        }
+    </style>
+    <script>
+        const creaJson=()=>{
+            let link="https://raw.githubusercontent.com/alessiorera/ilPicciottoJson/main/offerte-notizie.json"
+            fetch(link)
+            .then(response=>response.json())
+            .then(data=>{
+                var i=0
+                let titolo=document.getElementById("titolo").value
+                let link=document.getElementById("link").value
+                let radio=document.querySelectorAll("input[type='radio']")
+                let tipo,metodo,aggiunta,json
+                if(radio[0].checked==true){
+                    tipo="notizie"
+                }else{
+                    tipo="offerte"
+                }
+                if(radio[2].checked==true){
+                    metodo="aggiungi"
+                    aggiunta={
+                        "nome":titolo,
+                        "url":link
+                    }
+                    json=data
+                    if(tipo=="notizie"){
+                        json[0].notizie[json[0].notizie.length]=aggiunta
+                    }else{
+                        json[0].offerte[json[0].offerte.length]=aggiunta
+                    }
+                }else{
+                    metodo="rimpiazza"
+                    aggiunta=[{
+                        "nome":titolo,
+                        "url":link
+                    }]
+                    json=data
+                    if(tipo=="notizie"){
+                        json[0].notizie=aggiunta
+                    }else{
+                        json[0].offerte=aggiunta
+                    }
+                }
+                let resultDiv=document.getElementById("result")
+                let g=JSON.stringify(json,null,2)
+                console.log(g)
+                resultDiv.innerHTML=g
+            })
+        }
+        const copia=(event)=>{
+            var range = document.createRange();
+            range.selectNode(document.querySelector("#result"));
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
+            window.getSelection().removeAllRanges();
+            event.target.disabled=true
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <div id="navbar">
+            <div id="logo">
+                Il Picciotto
+            </div>
+        </div>
+        <div id="form">
+            <label>Tipo:</label>
+            <div class="flex">
+                <div class="radio">
+                    <input type="radio" id="notizia" name="tipo" value="notizia">
+                    <span>Notizia</span>
+                </div>
+                <div class="radio">
+                    <input type="radio" id="offerta" name="tipo" value="offerta">
+                    <span>Offerta</span>
+                </div>
+            </div>
+            <label>Metodo:</label>
+            <div class="flex">
+                <div class="radio">
+                    <input type="radio" id="notizia" name="metodo" value="aggiungi">
+                    <span>Aggiungi</span>
+                </div>
+                <div class="radio">
+                    <input type="radio" id="offerta" name="metodo" value="rimpiazza">
+                    <span>Rimpiazza</span>
+                </div>
+            </div>
+            <label>Titolo:</label>
+            <input id="titolo" type="text" name="titolo" placeholder="Titolo del contenuto">
+            <label>Link di instagram:</label>
+            <input type="text" id="link" name="link" placeholder="Link del post di instagram">
+            <input type="button" value="Conferma" onclick="creaJson()">
+        </div>
+        <div id="risDiv">
+            <button id="copia" onclick="copia(event)">copia</button>
+            <pre id="result">
+                
+            </pre>
+        </div>
+        <a id="linkFinale" href="https://github.com/alessiorera/ilPicciottoJson/blob/main/offerte-notizie.json">Apri il JSON</a>
+    </div>
+    <!-- Bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- fine Bootstrap -->
+</body>
+
+</html>
