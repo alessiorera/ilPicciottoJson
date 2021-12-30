@@ -94,14 +94,16 @@
             width: 100%;
             display: flex;
             justify-content: space-evenly;
+            align-items:center;
         }
         #linkFinale{
+            text-align: center;
             display: block;
             margin: auto;
             width: fit-content;
             padding: 40px;
             color:rgb(78, 78, 78);
-            font-size: 2rem;
+            font-size: 1.5rem;
         }
     </style>
     <script>
@@ -132,7 +134,7 @@
                     }else{
                         json[0].offerte[json[0].offerte.length]=aggiunta
                     }
-                }else{
+                }else if(radio[3].checked==true){
                     metodo="rimpiazza"
                     aggiunta=[{
                         "nome":titolo,
@@ -143,6 +145,15 @@
                         json[0].notizie=aggiunta
                     }else{
                         json[0].offerte=aggiunta
+                    }
+                }
+                else{
+                    metodo="svuota"
+                    json=data
+                    if(tipo=="notizie"){
+                        json[0].notizie=[]
+                    }else{
+                        json[0].offerte=[]
                     }
                 }
                 let resultDiv=document.getElementById("result")
@@ -185,12 +196,16 @@
             <label>Metodo:</label>
             <div class="flex">
                 <div class="radio">
-                    <input type="radio" id="notizia" name="metodo" value="aggiungi">
+                    <input type="radio" id="aggiungi" name="metodo" value="aggiungi">
                     <span>Aggiungi</span>
                 </div>
                 <div class="radio">
-                    <input type="radio" id="offerta" name="metodo" value="rimpiazza">
+                    <input type="radio" id="rimpiazza" name="metodo" value="rimpiazza">
                     <span>Rimpiazza</span>
+                </div>
+                <div class="radio">
+                    <input type="radio" id="svuota" name="metodo" value="svuota">
+                    <span>Svuota</span>
                 </div>
             </div>
             <label>Titolo:</label>
